@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func bisection(a float64, b float64, f func(float64) float64, delta float64) (float64, error) {
 	// same sign
@@ -58,4 +61,16 @@ func regulaFalsi(a float64, b float64, f func(float64) float64, delta float64) (
 	}
 
 	return mid, nil
+}
+
+func fixedPoint(guess float64, g func(float64) float64, delta float64) float64 {
+	curr := guess
+	next := g(curr)
+
+	for math.Abs(next-curr) > delta {
+		curr = next
+		next = g(curr)
+	}
+
+	return next
 }

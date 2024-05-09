@@ -7,13 +7,7 @@ import (
 
 func main() {
 
-	root, err := regulaFalsi(5, 6, func(x float64) float64{return (math.Exp(x) / math.Pow(x, 2)) - 10}, 0.001)
+	root := fixedPoint(1, func(x float64) float64{return math.Pow(3 + x - 2 * math.Pow(x, 2), 0.25)}, 0.0001)
 
-	if err == nil {
-		fmt.Printf("The root is: %v", root)
-	} else{
-		fmt.Println(err)
-	}
-
-	
+	fmt.Printf("The root is: %v", root)
 }
