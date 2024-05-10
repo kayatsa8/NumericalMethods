@@ -74,3 +74,15 @@ func fixedPoint(guess float64, g func(float64) float64, delta float64) float64 {
 
 	return next
 }
+
+func newtonMethod(guess float64, f func(float64) float64, fTag func(float64) float64, delta float64) float64 {
+	curr := guess
+	next := curr - f(curr) / fTag(curr)
+
+	for math.Abs(next - curr) > delta {
+		curr = next
+		next = curr - f(curr) / fTag(curr)
+	}
+
+	return next
+}
