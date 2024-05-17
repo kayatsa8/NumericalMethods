@@ -37,7 +37,7 @@ func (polynomial *Polynomial) addPolynomial(toAdd *Polynomial) (Polynomial, erro
 		return Polynomial{}, fmt.Errorf("given Polynomial is nil")
 	}
 
-	newPol := Polynomial{}
+	newPol := Polynomial{map[int]float64{}}
 
 	// add same-degree coefficients and unique-degree coefficients of polynomial
 	for degree, coefficient := range polynomial.coefficients {
