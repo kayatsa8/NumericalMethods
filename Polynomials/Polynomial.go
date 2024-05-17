@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 type Polynomial struct {
@@ -66,13 +67,27 @@ func (polynomial *Polynomial) toString() string {
 	pol := "P(x) ="
 	first := true
 
-	for degree, coefficient := range polynomial.coefficients {
-		pol = addCoefficientToString(pol, coefficient, first)
+	degrees := sortDegreesToString(polynomial.coefficients)
+
+	for _, degree := range degrees {
+		pol = addCoefficientToString(pol, polynomial.coefficients[degree], first)
 		pol = addDegreeToString(pol, degree)
 		first = false		
 	}
 
 	return pol
+}
+
+func sortDegreesToString(coefficients map[int] float64) []int {
+	degrees := []int{}
+
+	for degree := range coefficients {
+		degrees = append(degrees, degree)
+	}
+
+	sort.Ints(degrees)
+
+	return degrees
 }
 
 func addCoefficientToString(pol string, coefficient float64, first bool) string {
