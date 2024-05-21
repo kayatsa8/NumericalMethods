@@ -27,9 +27,10 @@ func main() {
 	fmt.Println(pol2.toString())
 	fmt.Println(pol3.toString())
 
+	m1, _ := multipliePolynomials(&pol1, &pol2)
+	m2, _ := multipliePolynomials(&m1, &pol3)
+	lm, _ := multipliePolynomialList([]Polynomial{pol1, pol2, pol3}, 1)
 
-	newPol, err := addAllPolynomials([]Polynomial{pol1, pol2, pol3})
-
-	fmt.Println(newPol.toString())
-	fmt.Println(err)
+	fmt.Println(m2.toString())
+	fmt.Println(lm.toString())
 }

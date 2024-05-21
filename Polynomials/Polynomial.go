@@ -10,6 +10,8 @@ type Polynomial struct {
 	coefficients map[int]float64 // <degree, coefficient>
 }
 
+
+// ----------------- constructors -----------------
 func newPolynomial(coefficients map[int]float64) Polynomial {
 	polynomial := Polynomial{
 		coefficients: coefficients,
@@ -35,6 +37,9 @@ func (polynomial *Polynomial) removeZeroCoefficients() {
 		polynomial.coefficients[0] = 0
 	}
 }
+
+
+// ----------------- add polynomials -----------------
 
 func (polynomial *Polynomial) addPolynomial(toAdd *Polynomial) (Polynomial, error) {
 	if toAdd == nil {
@@ -80,7 +85,54 @@ func addAllPolynomials(polynomials []Polynomial) (Polynomial, error) {
 }
 
 
+// ----------------- multiplie polynomials -----------------
 
+func multipliePolynomials(polynomial1 *Polynomial, polynomial2 *Polynomial) (Polynomial, error) {
+	if polynomial1 == nil || polynomial2 == nil {
+		return emptyPolynomial(), fmt.Errorf("one of the polynomials is nil")
+	}
+
+	result := emptyPolynomial()
+
+	for degree1, coefficient1 := range polynomial1.coefficients {
+		for degree2, coefficient2 := range polynomial2.coefficients {
+			resDegree := degree1 + degree2
+			resCoefficient := coefficient1 * coefficient2
+
+			if _, ok := result.coefficients[resDegree]; ok {
+				result.coefficients[resDegree] += resCoefficient
+			} else{
+				result.coefficients[resDegree] = resCoefficient
+			}
+		}
+	}
+
+	return result, nil
+}
+
+func multipliePolynomialList(polynomials []Polynomial, coefficient float64) (Polynomial, error) {
+	if polynomials == nil {
+		return emptyPolynomial(), fmt.Errorf("the polynomial list is nil")
+	}
+
+	result := newPolynomial(map[int]float64 {0: coefficient})
+	var err error = nil 
+
+	for _, polynomial := range polynomials {
+		result, err = multipliePolynomials(&result, &polynomial)
+
+		if err != nil{
+			return emptyPolynomial(), err
+		}
+	}
+
+	return result, nil
+}
+
+
+
+
+// ----------------- to string -----------------
 
 func (polynomial *Polynomial) toString() string {
 	pol := "P(x) ="
