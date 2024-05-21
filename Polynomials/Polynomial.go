@@ -130,6 +130,18 @@ func multipliePolynomialList(polynomials []Polynomial, coefficient float64) (Pol
 }
 
 
+// ----------------- calculate -----------------
+
+func (polynomial *Polynomial) calculate(value float64) (float64, error) {
+	result := 0.0
+
+	for degree, coefficient := range polynomial.coefficients {
+		result += coefficient * math.Pow(value, float64(degree))
+	}
+
+	return result, nil
+}
+
 
 
 // ----------------- to string -----------------
