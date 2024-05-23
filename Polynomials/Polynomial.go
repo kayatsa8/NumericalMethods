@@ -12,7 +12,7 @@ type Polynomial struct {
 
 
 // ----------------- constructors -----------------
-func newPolynomial(coefficients map[int]float64) Polynomial {
+func NewPolynomial(coefficients map[int]float64) Polynomial {
 	polynomial := Polynomial{
 		coefficients: coefficients,
 	}
@@ -22,7 +22,7 @@ func newPolynomial(coefficients map[int]float64) Polynomial {
 	return polynomial
 }
 
-func emptyPolynomial() Polynomial{
+func EmptyPolynomial() Polynomial{
 	return Polynomial{map[int]float64{}}
 }
 
@@ -70,14 +70,14 @@ func (polynomial *Polynomial) addPolynomial(toAdd *Polynomial) (Polynomial, erro
 }
 
 func addAllPolynomials(polynomials []Polynomial) (Polynomial, error) {
-	result := emptyPolynomial()
+	result := EmptyPolynomial()
 	err := fmt.Errorf("")
 
 	for _, polynomial := range polynomials {
 		result, err = result.addPolynomial(&polynomial)
 
 		if err != nil {
-			return emptyPolynomial(), err
+			return EmptyPolynomial(), err
 		}
 	}
 
@@ -89,10 +89,10 @@ func addAllPolynomials(polynomials []Polynomial) (Polynomial, error) {
 
 func multipliePolynomials(polynomial1 *Polynomial, polynomial2 *Polynomial) (Polynomial, error) {
 	if polynomial1 == nil || polynomial2 == nil {
-		return emptyPolynomial(), fmt.Errorf("one of the polynomials is nil")
+		return EmptyPolynomial(), fmt.Errorf("one of the polynomials is nil")
 	}
 
-	result := emptyPolynomial()
+	result := EmptyPolynomial()
 
 	for degree1, coefficient1 := range polynomial1.coefficients {
 		for degree2, coefficient2 := range polynomial2.coefficients {
@@ -112,17 +112,17 @@ func multipliePolynomials(polynomial1 *Polynomial, polynomial2 *Polynomial) (Pol
 
 func multipliePolynomialList(polynomials []Polynomial, coefficient float64) (Polynomial, error) {
 	if polynomials == nil {
-		return emptyPolynomial(), fmt.Errorf("the polynomial list is nil")
+		return EmptyPolynomial(), fmt.Errorf("the polynomial list is nil")
 	}
 
-	result := newPolynomial(map[int]float64 {0: coefficient})
+	result := NewPolynomial(map[int]float64 {0: coefficient})
 	var err error = nil 
 
 	for _, polynomial := range polynomials {
 		result, err = multipliePolynomials(&result, &polynomial)
 
 		if err != nil{
-			return emptyPolynomial(), err
+			return EmptyPolynomial(), err
 		}
 	}
 
