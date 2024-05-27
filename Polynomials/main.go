@@ -1,33 +1,36 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+)
 
 func main() {
-	pol1 := newPolynomial(map[int]float64{
-		2: 5,
-		9: 22,
-		0: 58,
-		1: -8,
-		7: 0,
-	})
+	router := chi.NewRouter()
+    router.Use(middleware.Logger)
+    router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("OK"))
+    })
 
-	pol2 := newPolynomial(map[int]float64{
-		2: -3,
-		0: -1,
-		6: -1,
-	})
+	router.Mount("/api/polynomials", Routes())
 
-	pol3 := newPolynomial(map[int]float64{
-		9: -20,
-		7: 1,
-		6: 2,
-	})
+	fmt.Println("Starting...")
 
-	fmt.Println(pol1.toString())
-	fmt.Println(pol2.toString())
-	fmt.Println(pol3.toString())
+    http.ListenAndServe(":3000", router)
+}
 
-	result, _ := pol2.calculate(5)
+func Routes() chi.Router {
+	router := chi.NewRouter()
 
-	fmt.Println(result)
+	controller := NewPolynomialController()
+
+	router.Get("/add", controller.AddPolynomials)
+	router.Get("/multiplie", controller.MultipliePolynomials)
+	router.Get("/calculate", controller.Calculate)
+	router.Get("/to_string", controller.ToString)
+
+	return router
 }
