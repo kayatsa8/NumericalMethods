@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
-    "github.com/go-chi/chi/v5"
-    "github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -16,6 +17,8 @@ func main() {
 
 	router.Mount("/api/polynomials", Routes())
 
+	fmt.Println("Starting...")
+
     http.ListenAndServe(":3000", router)
 }
 
@@ -25,9 +28,7 @@ func Routes() chi.Router {
 	controller := NewPolynomialController()
 
 	router.Get("/add", controller.AddPolynomials)
-	router.Get("/addList", controller.AddPolynomialList)
 	router.Get("/multiplie", controller.MultipliePolynomials)
-	router.Get("/multiplieList", controller.MultipliePolynomialList)
 	router.Get("/calculate", controller.Calculate)
 	router.Get("/to_string", controller.ToString)
 

@@ -7,14 +7,14 @@ import (
 )
 
 type Polynomial struct {
-	coefficients map[int]float64 // <degree, coefficient>
+	Coefficients map[int]float64 `json:"coefficients"` // <degree, coefficient>
 }
 
 
 // ----------------- constructors -----------------
 func NewPolynomial(coefficients map[int]float64) Polynomial {
 	polynomial := Polynomial{
-		coefficients: coefficients,
+		Coefficients: coefficients,
 	}
 
 	polynomial.removeZeroCoefficients()
@@ -27,14 +27,14 @@ func EmptyPolynomial() Polynomial{
 }
 
 func (polynomial *Polynomial) removeZeroCoefficients() {
-	for degree, coefficient := range polynomial.coefficients {
+	for degree, coefficient := range polynomial.Coefficients {
 		if coefficient == 0 {
-			delete(polynomial.coefficients, degree)
+			delete(polynomial.Coefficients, degree)
 		}
 	}
 
-	if len(polynomial.coefficients) == 0 {
-		polynomial.coefficients[0] = 0
+	if len(polynomial.Coefficients) == 0 {
+		polynomial.Coefficients[0] = 0
 	}
 }
 
@@ -49,18 +49,18 @@ func (polynomial *Polynomial) addPolynomial(toAdd *Polynomial) (Polynomial, erro
 	newPol := Polynomial{map[int]float64{}}
 
 	// add same-degree coefficients and unique-degree coefficients of polynomial
-	for degree, coefficient := range polynomial.coefficients {
-		if coefficient2, ok := toAdd.coefficients[degree]; ok {
-			newPol.coefficients[degree] = coefficient + coefficient2
+	for degree, coefficient := range polynomial.Coefficients {
+		if coefficient2, ok := toAdd.Coefficients[degree]; ok {
+			newPol.Coefficients[degree] = coefficient + coefficient2
 		} else {
-			newPol.coefficients[degree] = coefficient
+			newPol.Coefficients[degree] = coefficient
 		}
 	}
 
 	// add unique-degree coefficients of toAdd
-	for degree, coefficient := range toAdd.coefficients {
-		if _, ok := polynomial.coefficients[degree]; !ok {
-			newPol.coefficients[degree] = coefficient
+	for degree, coefficient := range toAdd.Coefficients {
+		if _, ok := polynomial.Coefficients[degree]; !ok {
+			newPol.Coefficients[degree] = coefficient
 		}
 	}
 
@@ -94,15 +94,15 @@ func multipliePolynomials(polynomial1 *Polynomial, polynomial2 *Polynomial) (Pol
 
 	result := EmptyPolynomial()
 
-	for degree1, coefficient1 := range polynomial1.coefficients {
-		for degree2, coefficient2 := range polynomial2.coefficients {
+	for degree1, coefficient1 := range polynomial1.Coefficients {
+		for degree2, coefficient2 := range polynomial2.Coefficients {
 			resDegree := degree1 + degree2
 			resCoefficient := coefficient1 * coefficient2
 
-			if _, ok := result.coefficients[resDegree]; ok {
-				result.coefficients[resDegree] += resCoefficient
+			if _, ok := result.Coefficients[resDegree]; ok {
+				result.Coefficients[resDegree] += resCoefficient
 			} else{
-				result.coefficients[resDegree] = resCoefficient
+				result.Coefficients[resDegree] = resCoefficient
 			}
 		}
 	}
@@ -135,7 +135,7 @@ func multipliePolynomialList(polynomials []Polynomial, coefficient float64) (Pol
 func (polynomial *Polynomial) calculate(value float64) (float64, error) {
 	result := 0.0
 
-	for degree, coefficient := range polynomial.coefficients {
+	for degree, coefficient := range polynomial.Coefficients {
 		result += coefficient * math.Pow(value, float64(degree))
 	}
 
@@ -150,10 +150,10 @@ func (polynomial *Polynomial) toString() string {
 	pol := "P(x) ="
 	first := true
 
-	degrees := sortDegreesToString(polynomial.coefficients)
+	degrees := sortDegreesToString(polynomial.Coefficients)
 
 	for _, degree := range degrees {
-		pol = addCoefficientToString(pol, polynomial.coefficients[degree], degree, first)
+		pol = addCoefficientToString(pol, polynomial.Coefficients[degree], degree, first)
 		pol = addDegreeToString(pol, degree)
 		first = false		
 	}
