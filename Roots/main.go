@@ -2,13 +2,32 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
+	router := chi.NewRouter()
+    router.Use(middleware.Logger)
+    router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("OK"))
+    })
 
-	root := newtonMethod(-8, func(x float64) float64{return math.Exp(x) + math.Pow(x, 3) -18*x +7},
-						 func(x float64) float64{return math.Exp(x) + 3*math.Pow(x, 2) - 18}, 0.001)
+	router.Mount("/api/roots", Routes())
 
-	fmt.Printf("The root is: %v", root)
+	fmt.Println("Starting...")
+
+    http.ListenAndServe(":3002", router)
+}
+
+func Routes() chi.Router {
+	router := chi.NewRouter()
+
+	controller := NewRootController()
+
+	router.Get("/bisection", controller.Bisection)
+
+	return router
 }
