@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // gets a map of <x, y> points
 func newtonInterpolation(points map[float64]float64) (Polynomial, error) {
@@ -51,7 +54,14 @@ func makeP0(points map[float64]float64) (Polynomial, float64) {
 }
 
 func calculatePolynomailValue(polynomial *Polynomial, value float64) float64 {
-	return 0 // TODO
+	response := fetch("http://localhost:3000/api/polynomials/calculate")
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return 0
+	}
+
+	return response.Result.(float64)
 }
 
 func makeDenominator(denominator *Polynomial, xPrev float64) Polynomial {
@@ -64,11 +74,25 @@ func makeDenominator(denominator *Polynomial, xPrev float64) Polynomial {
 }
 
 func multipliePolynomials(polynomials []Polynomial, coefficients float64) Polynomial {
-	return EmptyPolynomial() // TODO
+	response := fetch("http://localhost:3000/api/polynomials/multiplie")
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return EmptyPolynomial()
+	}
+
+	return response.Result.(Polynomial)
 }
 
 func addPolynomials(pol1 *Polynomial, pol2 *Polynomial) Polynomial {
-	return EmptyPolynomial() // TODO
+	response := fetch("http://localhost:3000/api/polynomials/add")
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return EmptyPolynomial()
+	}
+
+	return response.Result.(Polynomial)
 }
 
 
