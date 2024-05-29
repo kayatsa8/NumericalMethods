@@ -27,10 +27,10 @@ func Routes() chi.Router {
 
 	controller := NewPolynomialController()
 
-	router.Get("/add", controller.AddPolynomials)
-	router.Get("/multiplie", controller.MultipliePolynomials)
-	router.Get("/calculate", controller.Calculate)
-	router.Get("/to_string", controller.ToString)
+	router.Post("/add", controller.AddPolynomials)
+	router.Post("/multiplie", controller.MultipliePolynomials)
+	router.Post("/calculate", controller.Calculate)
+	router.Post("/to_string", controller.ToString)
 
 	return router
 }
