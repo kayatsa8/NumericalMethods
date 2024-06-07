@@ -1,19 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+)
 
 func main() {
-	points := map[float64]float64{
-		1.57: 2.63,
-		5.98: 4.52,
-		11.87: 0.23,
-		17.25: 11.2,
-		20.21: 0.0,
-	}
+	router := chi.NewRouter()
+    router.Use(middleware.Logger)
+    router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("OK"))
+    })
 
-	pol, err := newtonInterpolation(points)
+	router.Mount("/api/interpolation", Routes())
 
-	fmt.Println(fetch[string]("http://localhost:3000/api/polynomials/to_string", pol).Result)
+	fmt.Println("Starting...")
 
-	fmt.Println(err)
+    http.ListenAndServe(":3003", router)
+}
+
+func Routes() chi.Router {
+	router := chi.NewRouter()
+
+	controller := NewInterpolationController()
+
+	router.Post("/newton", controller.NewtonInterpolation)
+
+	return router
 }
