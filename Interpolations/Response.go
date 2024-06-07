@@ -1,12 +1,12 @@
 package main
 
-type Response struct {
-	Result any `json:"result"`
+type Response[T any] struct {
+	Result T `json:"result"`
 	Err error `json:"error"`
 }
 
-func NewResponse(result any, err error) Response {
-	return Response{
+func NewResponse[T any](result T, err error) Response[T] {
+	return Response[T]{
 		Result: result,
 		Err: err,
 	}

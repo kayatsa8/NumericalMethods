@@ -1,24 +1,28 @@
 package main
 
-// import(
-// 	"encoding/json"
-//     "net/http"
-// )
+import(
+	"encoding/json"
+    "net/http"
+	"bytes"
+)
 
-func fetch(uri string) Response {
-	// apiResponse, err := http.Post()
-    // if err != nil {
-    //     return NewResponse(nil, err)
-    // }
+func fetch[T any](url string, data any) Response[T] {
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return Response[T]{Err: err,}
+	}
 
-	// var response Response
-	// err = json.NewDecoder(apiResponse.Body).Decode(&response)
+	apiResponse, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+    if err != nil {
+        return Response[T]{Err: err,}
+    }
 
-	// if err != nil {
-	// 	return NewResponse(nil, err)
-	// }
+	var response Response[T]
+	err = json.NewDecoder(apiResponse.Body).Decode(&response)
 
-	// return response
+	if err != nil {
+		return Response[T]{Err: err,}
+	}
 
-	return NewResponse(nil, nil)
+	return response
 }

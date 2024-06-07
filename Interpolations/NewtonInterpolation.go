@@ -54,45 +54,46 @@ func makeP0(points map[float64]float64) (Polynomial, float64) {
 }
 
 func calculatePolynomailValue(polynomial *Polynomial, value float64) float64 {
-	response := fetch("http://localhost:3000/api/polynomials/calculate")
+	response := fetch[float64]("http://localhost:3000/api/polynomials/calculate", calculateInput{Pol: *polynomial, Value: value})
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
 		return 0
 	}
 
-	return response.Result.(float64)
+	return response.Result
 }
 
 func makeDenominator(denominator *Polynomial, xPrev float64) Polynomial {
 	mult := NewPolynomial(map[int]float64{
 		1: 1,
-		0: xPrev,
+		0: -xPrev,
 	})
 
 	return multipliePolynomials([]Polynomial{mult, *denominator}, 1)
 }
 
 func multipliePolynomials(polynomials []Polynomial, coefficients float64) Polynomial {
-	response := fetch("http://localhost:3000/api/polynomials/multiplie")
+	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/multiplie",
+						multiplieInput{Polynomianls: polynomials, Coefficient: coefficients})
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
 		return EmptyPolynomial()
 	}
 
-	return response.Result.(Polynomial)
+	return response.Result
 }
 
 func addPolynomials(pol1 *Polynomial, pol2 *Polynomial) Polynomial {
-	response := fetch("http://localhost:3000/api/polynomials/add")
+	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/add", []Polynomial{*pol1, *pol2})
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
 		return EmptyPolynomial()
 	}
 
-	return response.Result.(Polynomial)
+	return response.Result
 }
 
 

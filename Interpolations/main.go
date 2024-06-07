@@ -13,7 +13,7 @@ func main() {
 
 	pol, err := newtonInterpolation(points)
 
-	fmt.Println(pol)
+	fmt.Println(fetch[string]("http://localhost:3000/api/polynomials/to_string", pol).Result)
 
 	fmt.Println(err)
 }
