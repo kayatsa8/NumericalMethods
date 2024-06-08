@@ -21,7 +21,7 @@ func (controller InterpolationController) NewtonInterpolation(w http.ResponseWri
 
 	points := makePointsMap(pointsString, w)
 
-	result, err := newtonInterpolation(points)
+	result, err := NewtonInterpolation(points)
 	response := NewResponse(result, err)
 
 	err1 := json.NewEncoder(w).Encode(response)

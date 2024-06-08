@@ -6,7 +6,7 @@ import (
 )
 
 // gets a map of <x, y> points
-func newtonInterpolation(points map[float64]float64) (Polynomial, error) {
+func NewtonInterpolation(points map[float64]float64) (Polynomial, error) {
 	if len(points) == 0 {
 		return EmptyPolynomial(), fmt.Errorf("the points collection is empty")
 	}
@@ -54,7 +54,8 @@ func makeP0(points map[float64]float64) (Polynomial, float64) {
 }
 
 func calculatePolynomailValue(polynomial *Polynomial, value float64) float64 {
-	response := fetch[float64]("http://localhost:3000/api/polynomials/calculate", calculateInput{Pol: *polynomial, Value: value})
+	response := fetch[float64]("http://localhost:3000/api/polynomials/calculate",
+										CalculateInput{Pol: *polynomial, Value: value})
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
@@ -75,7 +76,7 @@ func makeDenominator(denominator *Polynomial, xPrev float64) Polynomial {
 
 func multipliePolynomials(polynomials []Polynomial, coefficients float64) Polynomial {
 	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/multiplie",
-						multiplieInput{Polynomianls: polynomials, Coefficient: coefficients})
+						MultiplieInput{Polynomianls: polynomials, Coefficient: coefficients})
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
