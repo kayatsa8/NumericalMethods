@@ -1,8 +1,15 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
-func GaussianElimination(A [][]float64) []float64 {
+func GaussianElimination(A [][]float64) ([]float64, error) {
+	if !validateInput(A) {
+		return []float64{}, fmt.Errorf("the input is invalid")
+	}
+
 	for i := range A {
 		scale(A, i)
 
@@ -13,9 +20,30 @@ func GaussianElimination(A [][]float64) []float64 {
 
 	X := solve(A)
 
-	return X
+	return X, nil
 }
 
+
+func validateInput(A [][]float64) bool {
+	if A == nil {
+		return false
+	}
+
+	n := len(A)
+	m := len(A[0])
+
+	if n + 1 != m {
+		return false
+	}
+
+	for _, line := range A {
+		if len(line) != m {
+			return false
+		}
+	}
+
+	return true
+}
 
 func scale(A [][]float64, i int) {
 	for k := i; k < len(A); k++ {
