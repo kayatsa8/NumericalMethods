@@ -11,14 +11,14 @@ func GaussianElimination(A [][]float64) []float64 {
 		subtruct(A, i)
 	}
 
-	solve()
+	X := solve(A)
 
-	return []float64{}
+	return X
 }
 
 
 func scale(A [][]float64, i int) {
-	for k := i; k < len(A[0]) - 1; k++ {
+	for k := i; k < len(A); k++ {
 		_max := getMax(A, k)
 
 		multiplieLine(A[k], 1 / _max)
@@ -29,7 +29,7 @@ func pivot(A [][]float64, i int) {
 	_max := A[i][i]
 	maxIndex := i
 
-	for k := i + 1; k < len(A[i]); k++ {
+	for k := i + 1; k < len(A); k++ {
 		a := A[k][i]
 
 		if a > _max {
@@ -50,7 +50,19 @@ func subtruct(A [][]float64, i int) {
 }
 
 func solve(A [][]float64) []float64{
+	n := len(A) - 1
+	m := len(A[0]) - 1
+
+	X := make([]float64, n + 1)
 	
+	X[n] = A[n][m] / A[n][n]
+
+	for i := n - 1; i >= 0; i-- {
+		sigma := calculateSum_solve(A[i], X, i, n)
+		X[i] = (A[i][m] - sigma) / A[i][i]
+	}
+
+	return X
 }
 
 
@@ -60,8 +72,8 @@ func solve(A [][]float64) []float64{
 func getMax(A [][]float64, k int) float64 {
 	_max := math.Abs(A[k][0])
 
-	for _, a := range A[k] {
-		if math.Abs(a) > _max {
+	for i, a := range A[k] {
+		if i < len(A[k]) - 1 && math.Abs(a) > _max {
 			_max = math.Abs(a)
 		}
 	}
@@ -103,4 +115,14 @@ func addLines(destination []float64, toAdd []float64, coefficient float64){
 	for i, l := range destination {
 		destination[i] = l + toAddMultiplied[i]
 	}
+}
+
+func calculateSum_solve(a_i []float64, X []float64, i int, n int) float64 {
+	result := 0.0
+
+	for j := i+1; j <= n; j++ {
+		result += a_i[j] * X[j]
+	}
+
+	return result
 }
