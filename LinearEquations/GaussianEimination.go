@@ -8,7 +8,7 @@ func GaussianElimination(A [][]float64) []float64 {
 
 		pivot(A, i)
 
-		subtruct()
+		subtruct(A, i)
 	}
 
 	solve()
@@ -41,11 +41,17 @@ func pivot(A [][]float64, i int) {
 	switchLines(A, i, maxIndex)
 }
 
-func subtruct() {
+func subtruct(A [][]float64, i int) {
+	for j := i + 1; j < len(A); j++ {
+		m_ij := A[j][i] / A[i][i]
 
+		addLines(A[j], A[i], -m_ij)
+	}
 }
 
-func solve() {}
+func solve(A [][]float64) []float64{
+	
+}
 
 
 
@@ -79,4 +85,22 @@ func switchLines(A [][]float64, line1 int, line2 int){
 
 	A[line1] = r2
 	A[line2] = r1
+}
+
+func addLines(destination []float64, toAdd []float64, coefficient float64){
+	if coefficient == 0 {
+		return
+	}
+
+	toAddMultiplied := []float64{}
+	
+	// multiplie toAdd by coefficient
+	for _, l := range toAdd {
+		toAddMultiplied = append(toAddMultiplied, coefficient * l)
+	}
+
+	// add toAddMultiplied to destination
+	for i, l := range destination {
+		destination[i] = l + toAddMultiplied[i]
+	}
 }
