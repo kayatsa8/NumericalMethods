@@ -58,8 +58,9 @@ func (controller PolynomialController) ToString(w http.ResponseWriter, r *http.R
 	checkBadRequest(err0, w)
 
 	result := polynomial.toString()
+	response := NewResponse(result, nil)
 
-	err1 := json.NewEncoder(w).Encode(result)
+	err1 := json.NewEncoder(w).Encode(response)
 	checkInternalError(err1, w)
 }
 
