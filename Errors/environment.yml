@@ -1,0 +1,6 @@
+name: NumericalMethods_Errors
+
+dependencies:
+  - python == 3.11
+  - flask
+  - flask-cors
