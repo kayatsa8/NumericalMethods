@@ -2,3 +2,4 @@ Polynomials: 3000
 Errors: 3001
 Roots: 3002
 Interpolations: 3003
+LinearEquations: 3004
