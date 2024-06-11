@@ -52,3 +52,15 @@ def regulaFalsi(a: float, b: float, f: Callable[[float], float], delta: float) -
 
     return mid
     
+
+def fixedPoint(guess: float, g: Callable[[float], float], delta: float) -> float:
+    curr = guess
+    next = g(curr)
+
+    while abs(curr - next) > delta:
+        curr = next
+        next = g(curr)
+
+    return next
+
+
