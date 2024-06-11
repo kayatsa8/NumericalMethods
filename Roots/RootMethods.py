@@ -64,3 +64,12 @@ def fixedPoint(guess: float, g: Callable[[float], float], delta: float) -> float
     return next
 
 
+def newtonMethod(guess: float, f: Callable[[float], float], fTag: Callable[[float], float], delta: float) -> float:
+    curr: float = guess
+    next: float = curr - f(curr) / fTag(curr)
+
+    while abs(curr - next) > delta:
+        curr = next
+        next = curr - f(curr) / fTag(curr)
+
+    return next
