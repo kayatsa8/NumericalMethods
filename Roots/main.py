@@ -1,5 +1,5 @@
 from typing import Callable
-from RootMethods import bisection
+from RootMethods import regulaFalsi
 import math
 
 
@@ -12,6 +12,6 @@ if __name__ == "__main__":
     f: Callable[[float], float] = lambda x: math.exp(math.sin(x)) - 2
     delta: float = 0.000001
 
-    root = bisection(a, b, f, delta)
+    root = regulaFalsi(a, b, f, delta)
 
     print(root)
