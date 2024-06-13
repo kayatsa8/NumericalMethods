@@ -28,6 +28,7 @@ func Routes() chi.Router {
 	controller := NewInterpolationController()
 
 	router.Post("/newton", controller.NewtonInterpolation)
+	router.Post("/vandermonde", controller.VandermondeInterpolation)
 
 	return router
 }
