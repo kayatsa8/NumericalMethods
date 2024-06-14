@@ -1,4 +1,4 @@
-name: NumericalMethods_Roots
+name: NumericalMethods
 
 dependencies:
   - python == 3.11
