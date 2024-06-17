@@ -3,3 +3,4 @@ Errors: http://<host>:3001/api/errors
 Roots: http://<host>:3002/api/roots
 Interpolations: http://<host>:3003/api/interpolation
 LinearEquations: http://<host>:3004/api/solve_equations
+LeastSquares: http://<host>:3005/api/least_squares
