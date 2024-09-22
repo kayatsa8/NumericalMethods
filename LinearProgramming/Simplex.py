@@ -50,11 +50,12 @@ def solve(table: List[List[float]]) -> List[float]:
         
         row: int = getRow(table=table, col=col)
 
-        table[row] *= 1 / table[row][col]
+        table[row] = [1 / table[row][col] * x for x in table[row]]
 
         for i in range(len(table)):
             if i != row:
-                table[i] -= table[i][col] * table[row][col]
+                a = table[i][col]
+                table[i] = [x - a * y for x, y in zip(table[i], table[row])]
 
     res = prepareResult(table)
 
@@ -74,9 +75,14 @@ def getColumn(table: List[List[float]]) -> int:
 
 
 def prepareResult(table: List[List[float]]) -> List[float]:
-    # TODO: complete
-    print(table)
-    return []
+    res: List[float] = []
+
+    for j in range(len(table[0])):
+        for i in range(len(table)):
+            if table[i][j] == 1:
+                res.append(table[i][-1])
+
+    return res
 
 
 def getRow(table: List[List[float]], col: int) -> int:
