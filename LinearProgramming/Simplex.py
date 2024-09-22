@@ -30,15 +30,69 @@ def prepareTable(objective: List[float], constraints: List[List[float]]) -> List
         E.append(c[-1])
 
         table.append(E)
-
-    E = -1 * objective[:X] + [0] * S + objective[-1] + [0]
+    
+    E = objective[:X]
+    E = [x * -1 for x in E] + [0] * S + [objective[-1]] + [0]
 
     table.append(E)
 
     return table
 
 
-
-
 def solve(table: List[List[float]]) -> List[float]:
-    pass
+    res: List[float] = []
+
+    while True:
+        col: int = getColumn(table)
+
+        if table[-1][col] >= 0:
+            break
+        
+        row: int = getRow(table=table, col=col)
+
+        table[row] *= 1 / table[row][col]
+
+        for i in range(len(table)):
+            if i != row:
+                table[i] -= table[i][col] * table[row][col]
+
+    res = prepareResult(table)
+
+    return res
+
+
+def getColumn(table: List[List[float]]) -> int:
+    min: int = table[-1][0]
+    minIndex: int = 0
+
+    for i in range(len(table[-1]) - 2):
+        if min > table[-1][i]:
+            min = table[-1][i]
+            minIndex = i
+
+    return minIndex
+
+
+def prepareResult(table: List[List[float]]) -> List[float]:
+    # TODO: complete
+    print(table)
+    return []
+
+
+def getRow(table: List[List[float]], col: int) -> int:
+    minTr: float = float("inf")
+    minIndex: int = -1
+
+    for i in range(len(table) - 1):
+        if table[i][col] != 0:
+            tr = table[i][-1] / table[i][col]
+
+            if tr < minTr:
+                minTr = tr
+                minIndex = i
+
+    return minIndex
+
+
+
+
