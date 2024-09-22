@@ -26,18 +26,17 @@ def prepareTable(objective: List[float], constraints: List[List[float]]) -> List
 
     for i, c in enumerate(constraints):
         E = c[:X] + [0] * (S + 1)
-        E[X + 1 + i] = 1
+        E[X + i] = 1
         E.append(c[-1])
 
         table.append(E)
 
-    E = -1 * objective[:X] + [0] * S + objective[-1]
+    E = -1 * objective[:X] + [0] * S + objective[-1] + [0]
 
     table.append(E)
 
     return table
 
-    
 
 
 
