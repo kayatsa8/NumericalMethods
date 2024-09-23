@@ -76,11 +76,19 @@ def getColumn(table: List[List[float]]) -> int:
 
 def prepareResult(table: List[List[float]]) -> List[float]:
     res: List[float] = []
+    resLen: int = 0
 
-    for j in range(len(table[0])):
+    for j in range(len(table[0]) - len(table) - 1):
         for i in range(len(table)):
             if table[i][j] == 1:
                 res.append(table[i][-1])
+        
+        if len(res) == resLen:
+            res.append(0)
+        
+        resLen = len(res)
+
+    res.append(table[-1][-1])
 
     return res
 
