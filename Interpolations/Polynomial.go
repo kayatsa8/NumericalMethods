@@ -1,5 +1,9 @@
 package main
 
+import (
+	"log"
+)
+
 
 type Polynomial struct {
 	Coefficients map[int]float64 `json:"coefficients"` // <degree, coefficient>
@@ -32,4 +36,32 @@ func (polynomial *Polynomial) removeZeroCoefficients() {
 		polynomial.Coefficients[0] = 0
 	}
 }
+
+
+func multipliePolynomials(polynomials []Polynomial, coefficients float64) Polynomial {
+	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/multiplie",
+						MultiplieInput{Polynomianls: polynomials, Coefficient: coefficients})
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return EmptyPolynomial()
+	}
+
+	return response.Result
+}
+
+func addPolynomials(pol1 *Polynomial, pol2 *Polynomial) Polynomial {
+	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/add", []Polynomial{*pol1, *pol2})
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return EmptyPolynomial()
+	}
+
+	return response.Result
+}
+
+
+
+
 

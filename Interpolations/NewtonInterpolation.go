@@ -74,27 +74,4 @@ func makeDenominator(denominator *Polynomial, xPrev float64) Polynomial {
 	return multipliePolynomials([]Polynomial{mult, *denominator}, 1)
 }
 
-func multipliePolynomials(polynomials []Polynomial, coefficients float64) Polynomial {
-	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/multiplie",
-						MultiplieInput{Polynomianls: polynomials, Coefficient: coefficients})
-
-	if response.Err != nil {
-		log.Fatal(response.Err)
-		return EmptyPolynomial()
-	}
-
-	return response.Result
-}
-
-func addPolynomials(pol1 *Polynomial, pol2 *Polynomial) Polynomial {
-	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/add", []Polynomial{*pol1, *pol2})
-
-	if response.Err != nil {
-		log.Fatal(response.Err)
-		return EmptyPolynomial()
-	}
-
-	return response.Result
-}
-
 
