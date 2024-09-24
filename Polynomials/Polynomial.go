@@ -143,6 +143,20 @@ func (polynomial *Polynomial) calculate(value float64) (float64, error) {
 }
 
 
+// ----------------- derivative -----------------
+func (polynomial *Polynomial) derivative() Polynomial {
+	var dp Polynomial = EmptyPolynomial()
+
+	for p, c := range polynomial.Coefficients {
+		if p != 0{
+			dp.Coefficients[p - 1] = c * float64(p)
+		}
+	}
+
+	return dp
+}
+
+
 
 // ----------------- to string -----------------
 

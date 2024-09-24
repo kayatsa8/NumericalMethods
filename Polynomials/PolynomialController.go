@@ -51,6 +51,19 @@ func (controller PolynomialController) Calculate(w http.ResponseWriter, r *http.
 	checkInternalError(err1, w)
 }
 
+func (controller PolynomialController) Derivative(w http.ResponseWriter, r *http.Request){
+	var input Polynomial
+
+	err0 := json.NewDecoder(r.Body).Decode(&input)
+	checkBadRequest(err0, w)
+
+	result := input.derivative()
+	response := NewResponse(result, nil)
+
+	err1 := json.NewEncoder(w).Encode(response)
+	checkInternalError(err1, w)
+}
+
 func (controller PolynomialController) ToString(w http.ResponseWriter, r *http.Request) {
 	var polynomial Polynomial
 
