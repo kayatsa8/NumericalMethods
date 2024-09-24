@@ -58,6 +58,22 @@ func (controller InterpolationController) LagrangeInterpolation(w http.ResponseW
 	checkInternalError(err1, w)
 }
 
+func (controller InterpolationController) HermiteInterpolation(w http.ResponseWriter, r *http.Request) {
+	var input map[string]map[string]float64
+
+	err0 := json.NewDecoder(r.Body).Decode(&input)
+	checkBadRequest(err0, w)
+
+	points := makePointsMap(input["points"], w)
+	diffPoints := makePointsMap(input["diffPoints"], w)
+
+	result, err := HermiteInterpolation(points, diffPoints)
+	response := NewResponse(result, err)
+
+	err1 := json.NewEncoder(w).Encode(response)
+	checkInternalError(err1, w)
+}
+
 
 
 func makePointsMap(pointsString map[string]float64, w http.ResponseWriter) map[float64]float64{
