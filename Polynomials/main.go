@@ -31,6 +31,7 @@ func Routes() chi.Router {
 	router.Post("/multiplie", controller.MultipliePolynomials)
 	router.Post("/calculate", controller.Calculate)
 	router.Post("/to_string", controller.ToString)
+	router.Post("/derivative", controller.Derivative)
 
 	return router
 }
