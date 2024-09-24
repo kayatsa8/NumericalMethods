@@ -18,12 +18,16 @@ func HermiteInterpolation(points map[float64]float64, diffPoints map[float64]flo
 
 	for x := range points {
 		L := makeL_i(points, x, diffPolinomials)
+		LTag := derivative(&L)
 		L = multipliePolynomials([]Polynomial{L, L}, 1)
 		
 		Hc := NewPolynomial(map[int]float64{
-			0: 1 + 2 * x,
+			0: 2 * x,
 			1: -2,
 		})
+		Hc = multipliePolynomials([]Polynomial{Hc, LTag}, 1)
+		one := NewPolynomial(map[int]float64{0: 1})
+		Hc = addPolynomials(&Hc, &one)
 
 		Hdc := NewPolynomial(map[int]float64{
 			0: -x,
