@@ -31,6 +31,7 @@ func Routes() chi.Router {
 	router.Post("/vandermonde", controller.VandermondeInterpolation)
 	router.Post("/lagrange", controller.LagrangeInterpolation)
 	router.Post("/hermite", controller.HermiteInterpolation)
+	router.Post("/linear", controller.PiecewiseLinear)
 
 	return router
 }

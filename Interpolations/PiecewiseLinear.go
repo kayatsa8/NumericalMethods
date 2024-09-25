@@ -37,6 +37,7 @@ func getX(points map[float64]float64) []float64 {
 
 	for x := range points {
 		X[i] = x
+		i++
 	}
 
 	sort.Slice(X, func(i, j int) bool {
