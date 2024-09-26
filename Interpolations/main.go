@@ -30,6 +30,7 @@ func Routes() chi.Router {
 	router.Post("/newton", controller.NewtonInterpolation)
 	router.Post("/vandermonde", controller.VandermondeInterpolation)
 	router.Post("/lagrange", controller.LagrangeInterpolation)
+	router.Post("/hermite", controller.HermiteInterpolation)
 
 	return router
 }

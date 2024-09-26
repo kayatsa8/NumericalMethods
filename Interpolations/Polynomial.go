@@ -61,6 +61,16 @@ func addPolynomials(pol1 *Polynomial, pol2 *Polynomial) Polynomial {
 	return response.Result
 }
 
+func derivative(pol *Polynomial) Polynomial {
+	response := fetch[Polynomial]("http://localhost:3000/api/polynomials/derivative", *pol)
+
+	if response.Err != nil {
+		log.Fatal(response.Err)
+		return EmptyPolynomial()
+	}
+
+	return response.Result
+}
 
 
 
