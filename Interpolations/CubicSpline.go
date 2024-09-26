@@ -22,8 +22,24 @@ func CubicSpline(points map[float64]float64) ([]RangedPolynomial, error){
 	b := getB(h, a, c)
 	d := getD(c, h)
 
-	
+	for i:=0; i<len(X)-1; i++ {
+		s1 := NewPolynomial(map[int]float64{
+			0: a[i],
+		})
+		
+		sTemp := NewPolynomial(map[int]float64{
+			0: -X[i],
+			1: 1,
+		})
 
+		s2 := multipliePolynomials([]Polynomial{sTemp}, b[i])
+		s3 := multipliePolynomials([]Polynomial{sTemp, sTemp}, c[i])
+		s4 := multipliePolynomials([]Polynomial{sTemp, sTemp, sTemp}, d[i])
+
+		s := addMultiplePolynomials([]Polynomial{s1, s2, s3, s4})
+
+		S = append(S, NewRangedPolynomial(s, X[i], X[i + 1]))
+	}
 	
 	return S, nil
 }
