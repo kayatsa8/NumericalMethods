@@ -45,7 +45,7 @@ func CubicSpline(points map[float64]float64) ([]RangedPolynomial, error){
 }
 
 func getA(points map[float64]float64, X []float64) []float64 {
-	a := make([]float64, len(X) - 1)
+	a := make([]float64, len(X))
 
 	for i := 0; i<len(X); i++ {
 		a[i] = points[X[i]]
@@ -68,11 +68,15 @@ func getC(h []float64, a []float64) []float64 {
 	n := len(h)
 	equations := make([][]float64, n - 1, n)
 
+	for i:=0; i<len(equations); i++ {
+		equations[i] = make([]float64, n)
+	}
+
 	equations[0][0] = 2 * (h[0] + h[1])
 	equations[0][1] = h[1]
 	equations[0][n - 1] = (3 / h[1]) * (a[2] - a[1]) - (3 / a[0]) * (a[1] - a[0])
 
-	for i:=1; i<n-1; i++ {
+	for i:=1; i<n-2; i++ {
 		equations[i][i - 1] = h[i]
 		equations[i][i] = 2 * (h[i] + h[i + 1])
 		equations[i][i + 1] = h[i + 1]
@@ -82,7 +86,7 @@ func getC(h []float64, a []float64) []float64 {
 
 	equations[n - 2][n - 3] = h[n - 2]
 	equations[n - 2][n - 2] = 2 * (h[n - 2] + h[n - 1])
-	equations[n - 2][n - 1] = (3 / h[n]) * (a[n + 1] - a[n]) - (3 / h[n - 1]) * (a[n] - a[n - 1])
+	equations[n - 2][n - 1] = (3 / h[n - 1]) * (a[n] - a[n - 1]) - (3 / h[n - 2]) * (a[n - 1] - a[n - 2])
 	
 	c := solveEquations(equations)
 	c = append([]float64{0}, c...)
@@ -117,7 +121,7 @@ func getD(c []float64, h []float64) []float64 {
 
 
 func solveEquations(equations [][]float64) []float64{
-	response := fetch[[]float64]("http://localhost:3004/api/solve_equations", equations)
+	response := fetch[[]float64]("http://localhost:3004/api/solve_equations/gaussian", equations)
 
 	if response.Err != nil {
 		log.Fatal(response.Err)
