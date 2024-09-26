@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -74,6 +75,21 @@ func (controller InterpolationController) HermiteInterpolation(w http.ResponseWr
 	checkInternalError(err1, w)
 }
 
+func (controller InterpolationController) PiecewiseLinear(w http.ResponseWriter, r *http.Request) {
+	var pointsString map[string]float64
+
+	err0 := json.NewDecoder(r.Body).Decode(&pointsString)
+	checkBadRequest(err0, w)
+
+	points := makePointsMap(pointsString, w)
+
+	result, err := PiecewiseLinear(points)
+	response := NewResponse(result, err)
+
+	err1 := json.NewEncoder(w).Encode(response)
+	checkInternalError(err1, w)
+}
+
 
 
 func makePointsMap(pointsString map[string]float64, w http.ResponseWriter) map[float64]float64{
@@ -106,6 +122,7 @@ func makePointsMap(pointsString map[string]float64, w http.ResponseWriter) map[f
 func checkInternalError(err error, w http.ResponseWriter) {
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
+		log.Fatal(err)
 		return
 	}
 }
