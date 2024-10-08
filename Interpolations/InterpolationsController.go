@@ -90,6 +90,20 @@ func (controller InterpolationController) PiecewiseLinear(w http.ResponseWriter,
 	checkInternalError(err1, w)
 }
 
+func (controller InterpolationController) CubicSpline(w http.ResponseWriter, r *http.Request) {
+	var pointsString map[string]float64
+
+	err0 := json.NewDecoder(r.Body).Decode(&pointsString)
+	checkBadRequest(err0, w)
+
+	points := makePointsMap(pointsString, w)
+
+	result, err := CubicSpline(points)
+	response := NewResponse(result, err)
+
+	err1 := json.NewEncoder(w).Encode(response)
+	checkInternalError(err1, w)
+}
 
 
 func makePointsMap(pointsString map[string]float64, w http.ResponseWriter) map[float64]float64{

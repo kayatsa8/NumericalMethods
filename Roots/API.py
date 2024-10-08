@@ -99,7 +99,7 @@ def fixedPoint():
 
 
 @bp.route("/newton_method", methods=["POST"])
-def newronMethod():
+def newtonMethod():
     data: dict = request.get_json()
 
     schema: List[str] = ["guess", "f", "fTag", "delta"]
